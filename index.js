@@ -32,6 +32,9 @@ const server = app.listen(HTTP_PORT, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%',HTTP_PORT))
 });
 
+//use json middleware
+app.use(express.json());
+
 //logging
 app.use( (req, res, next) => {
 	let logdata = {
@@ -106,7 +109,19 @@ function flipACoin(call) {
 	return response;
 }
 
+// Serve static HTML files
+app.use(express.static('./public'));
 
+app.post('/app/flip/coins/', (req, res, next) => {
+    const flips = coinFlips(req.body.number)
+    const count = countFlips(flips)
+    res.status(200).json({"raw":flips,"summary":count})
+})
+
+app.post('/app/flip/call/', (req, res, next) => {
+    const game = flipACoin(req.body.guess)
+    res.status(200).json(game)
+})
 
 app.get('/app/', (req, res) => {
 // Respond with status 200
