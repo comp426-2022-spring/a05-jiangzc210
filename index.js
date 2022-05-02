@@ -4,7 +4,7 @@ const app = express()
 const args = require('minimist')(process.argv.slice(2))
 args['port']
 const HTTP_PORT = args.port || 5555
-const db = require(".src/services/database.js");
+const db = require("./src/services/database.js");
 
 const helpText = `
 server.js [options]
